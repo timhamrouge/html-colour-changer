@@ -17,30 +17,41 @@
             margin: 4px 2px;
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
+            outline: none;
+            box-shadow: 2px 4px;
         }
 
-        html,
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 1px 2px;
+        }
+
         body {
-            /* height: 100%; */
             display: grid;
+            background-color: #ffffff;
         }
 
         #container-div {
-            margin: auto;
+            margin: 0 auto;
+        }
+
+        #hex-div {
+            text-align: center; 
+            font-size: xx-large; 
+            font-family: 'Courier New', Courier, monospace;
         }
     </style>
 </head>
 
-<body id="body" style="background-color: #ffffff;">
-    <div id="container-div" style="margin: 0 auto;">
-        <button id="button" onclick="changeColour()">Change Colour</button>
-        <p id="hexdiv" style="text-align: center; font-size: xx-large; font-family: 'Courier New', Courier, monospace;">
-            #ffffff</p>
+<body id="body">
+    <div id="container-div">
+        <button id="button" onclick="changeFeatureColour()">Change Colour</button>
+        <p id="hex-div">#ffffff</p>
     </div>
-    <script>
 
+    <script>
         function generateNum() { 
-            return Math.floor(Math.random() * 256) 
+            return Math.floor(Math.random() * 256); 
         }
 
         function numToHex(col) {
@@ -52,34 +63,30 @@
             return numToHex(red) + numToHex(green) + numToHex(blue);
         }
 
-        function changeColour() {
+        function colourIsDark(red, green, blue) {
+            return (0.2126 * red + 0.7152 * green + 0.0722 * blue) < 100;
+        }
+
+        function changeUIColour(colour){
+            document.getElementById("button").style["color"] = colour;
+            document.getElementById("hex-div").style["color"] = colour;
+            document.getElementById("button").style["border-color"] = colour;  
+        }
+
+        function changeFeatureColour() {
             const red = generateNum(), green = generateNum(), blue = generateNum();
             const hexCode = "#" + getFullHex(red, green, blue);
 
-            var luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-
-            if (luma < 100) {
-                document.getElementById("button").style["color"] = "white"
-                document.getElementById("hexdiv").style["color"] = "white"
-
-                document.getElementById("button").style["border-color"] = "white"
-                document.getElementById("button").style['background-color'] = `rgb(${red},${green},${blue}`
+            if (colourIsDark(red, green, blue)) {
+                changeUIColour("white");
             } else {
-                document.getElementById("button").style["color"] = "black"
-                document.getElementById("hexdiv").style["color"] = "black"
-
-                document.getElementById("button").style["border-color"] = "black"
-                document.getElementById("button").style['background-color'] = `rgb(${red},${green},${blue}`
+                changeUIColour("black");
             }
-            document.getElementById("hexdiv").innerHTML = hexCode;
 
+            document.getElementById("button").style['background-color'] = hexCode;
             document.getElementById("body").style['background-color'] = hexCode;
-
+            document.getElementById("hex-div").innerHTML = hexCode;
         }
-// TODO
-//   /button focus/hover css
-// Nice animation for button clicking
     </script>
 </body>
-
 </html>
