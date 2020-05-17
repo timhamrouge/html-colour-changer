@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colour Changer</title>
+    <style>
+        button {
+            border: solid 1px black;
+            background-color: #ffffff;
+            border-radius: 20px;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        html,
+        body {
+            /* height: 100%; */
+            display: grid;
+        }
+
+        #container-div {
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body id="body" style="background-color: #ffffff;">
+    <div id="container-div" style="margin: 0 auto;">
+        <button id="button" onclick="changeColour()">Change Colour</button>
+        <p id="hexdiv" style="text-align: center; font-size: xx-large; font-family: 'Courier New', Courier, monospace;">
+            #ffffff</p>
+    </div>
+    <script>
+
+        function generateNum() { 
+            return Math.floor(Math.random() * 256) 
+        }
+
+        function numToHex(col) {
+            const hex = col.toString(16);
+            return hex.padStart(2, 0);
+        }
+
+        function getFullHex(red, green, blue) {
+            return numToHex(red) + numToHex(green) + numToHex(blue);
+        }
+
+        function changeColour() {
+            const red = generateNum(), green = generateNum(), blue = generateNum();
+            const hexCode = "#" + getFullHex(red, green, blue);
+
+            var luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+
+            if (luma < 100) {
+                document.getElementById("button").style["color"] = "white"
+                document.getElementById("hexdiv").style["color"] = "white"
+
+                document.getElementById("button").style["border-color"] = "white"
+                document.getElementById("button").style['background-color'] = `rgb(${red},${green},${blue}`
+            } else {
+                document.getElementById("button").style["color"] = "black"
+                document.getElementById("hexdiv").style["color"] = "black"
+
+                document.getElementById("button").style["border-color"] = "black"
+                document.getElementById("button").style['background-color'] = `rgb(${red},${green},${blue}`
+            }
+            document.getElementById("hexdiv").innerHTML = hexCode;
+
+            document.getElementById("body").style['background-color'] = hexCode;
+
+        }
+// TODO
+//   /button focus/hover css
+// Nice animation for button clicking
+    </script>
+</body>
+
+</html>
